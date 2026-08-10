@@ -1,0 +1,51 @@
+generator client {
+  provider = "prisma-client"
+  output   = "../generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+enum Role {
+ USER 
+ ADMIN
+}
+
+enum AuthProvider {
+   CREDENTIALS
+   GOOGLE
+}
+
+model User {
+  id String @id @default(uuid())
+  name String 
+  email String @unique
+  password String?
+  role Role @default(USER)
+
+  auths Auth[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("users")
+}
+
+model Auth {
+   id String @id @default(uuid())
+
+   provider AuthProvider
+   providerId String
+
+   userId String
+   user User @relation(fields: [userId], references: [id])
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([provider,providerId])  // CRED + email -> Google + p.id
+  @@unique([userId,provider])  // 1 + G , 1 + C
+  @@map("auths")
+}
+
