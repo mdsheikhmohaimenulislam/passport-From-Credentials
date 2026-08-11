@@ -5,6 +5,8 @@ import { notFound } from "./middlewares/notFound";
 import { errorHandler } from "./middlewares/globalErrorHandler";
 import router from "./routes";
 import config from "./config";
+import passport from "passport";
+import "./config/passport";
 
 const app = express();
 app.use(express.json());
@@ -22,6 +24,7 @@ app.use(
 );
 
 app.use(cookieParser());
+app.use(passport.initialize());
 
 app.use("/api/v1", router);
 
