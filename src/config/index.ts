@@ -1,6 +1,8 @@
 import dotenv from "dotenv";
 import path from "path";
 
+// ..............
+
 dotenv.config({
   path: path.join(process.cwd(), ".env"),
   // Allow .env files with CRLF line endings (common on Windows).
